@@ -23,14 +23,14 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 // to serve images inside public folder
-app.use(express.static('public')); 
+app.use(express.static('public'));
 app.use('/images', express.static('images'));
 
 
 dotenv.config();
 const PORT = process.env.PORT;
 
-const CONNECTION =process.env.MONGODB_CONNECTION;
+const CONNECTION = process.env.MONGODB_CONNECTION;
 mongoose
   .connect(CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen(PORT, () => console.log(`Listening at Port ${PORT}`)))
@@ -43,4 +43,9 @@ app.use('/posts', PostRoute)
 app.use('/upload', UploadRoute)
 app.use('/chat', ChatRoute)
 app.use('/message', MessageRoute)
-app.use('./ecom',EcomRouter)
+app.use('./ecom', EcomRouter)
+
+app.use(express.static(path.join(__dirname, "./build")))
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, './build/index.html'))
+})
