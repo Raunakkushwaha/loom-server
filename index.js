@@ -15,8 +15,14 @@ import ChatRoute from './routes/ChatRoute.js'
 import MessageRoute from './routes/MessageRoute.js'
 import EcomRouter from './routes/EcomRoute.js'
 import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const app = express();
+
+// Define __dirname manually
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 // middleware
@@ -46,7 +52,8 @@ app.use('/chat', ChatRoute)
 app.use('/message', MessageRoute)
 app.use('./ecom', EcomRouter)
 
-app.use(express.static(path.join(__dirname, "./build")))
+app.use(express.static(path.join(__dirname, "./build")));
+
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, './build/index.html'))
-})
+  res.sendFile(path.join(__dirname, "./build/index.html"));
+});
